@@ -38,7 +38,7 @@ public class CustomerServiceImpl implements CustomerService {
         LocalDateTime fromDate = LocalDateTime.parse(from);
         LocalDateTime toDate = LocalDateTime.parse(to);
         return transactionRepository
-                .findByCustomerIdAndDateBetween(customerId, fromDate, toDate);
+                .findByCustomerIdAndTransactionDateBetween(customerId, fromDate, toDate);
     }
 
 }
