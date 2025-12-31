@@ -3,6 +3,7 @@ package com.example.PetrolPump.controller;
 import com.example.PetrolPump.entity.Customer;
 import com.example.PetrolPump.entity.Transaction;
 import com.example.PetrolPump.service.CustomerService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +21,8 @@ public class CustomerController {
     }
 
     @PostMapping
-    public Customer addCustomer(@RequestBody Customer customer) {
+    public Customer addCustomer( @Valid @RequestBody Customer customer) {
+        System.out.println("Received customer: " + customer);
         return customerService.addCustomer(customer);
     }
 
