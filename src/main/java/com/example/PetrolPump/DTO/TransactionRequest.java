@@ -1,11 +1,7 @@
 package com.example.PetrolPump.DTO;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.math.BigDecimal;
 
-@Getter
-@Setter
 public class TransactionRequest {
     private Long shiftId;
     private Long employeeId;
@@ -13,4 +9,52 @@ public class TransactionRequest {
     private Long paymentModeId;
     private Long customerId; // only for CREDIT
     private BigDecimal liters;
+
+    public Long getShiftId() {
+        return shiftId;
+    }
+
+    public void setShiftId(Long shiftId) {
+        this.shiftId = shiftId;
+    }
+
+    public Long getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(Long employeeId) {
+        this.employeeId = employeeId;
+    }
+
+    public Long getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Long productId) {
+        this.productId = productId;
+    }
+
+    public Long getPaymentModeId() {
+        return paymentModeId;
+    }
+
+    public void setPaymentModeId(Long paymentModeId) {
+        this.paymentModeId = paymentModeId;
+    }
+
+    public Long getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(Long customerId) {
+        this.customerId = customerId;
+    }
+
+    public BigDecimal getLiters() {
+        return liters;
+    }
+
+    public void setLiters(BigDecimal liters) {
+        this.liters = liters;
+    }
 }

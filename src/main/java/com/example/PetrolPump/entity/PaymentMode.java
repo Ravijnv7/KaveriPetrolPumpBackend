@@ -12,10 +12,22 @@ import java.util.List;
 
 @Entity
 @Table(name = "payment_modes")
-@Getter @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class PaymentMode {
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getModeName() {
+        return modeName;
+    }
+
+    public void setModeName(String modeName) {
+        this.modeName = modeName;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
