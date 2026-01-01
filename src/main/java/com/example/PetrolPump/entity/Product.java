@@ -17,8 +17,8 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String productName;
+    @Column(nullable = false,unique = true)
+    private String productName;//MS OR HSD
 
     @Column(nullable = false)
     private BigDecimal productPrice;
