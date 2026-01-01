@@ -22,6 +22,7 @@ public class CustomerController {
 
     @PostMapping
     public Customer addCustomer( @Valid @RequestBody Customer customer) {
+        System.out.println(customer.getCustomerName());
         System.out.println("Received customer: " + customer);
         return customerService.addCustomer(customer);
     }

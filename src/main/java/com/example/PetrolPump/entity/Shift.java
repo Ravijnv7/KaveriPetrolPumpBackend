@@ -1,14 +1,11 @@
 package com.example.PetrolPump.entity;
-
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "shifts")
-@Getter @Setter
 @NoArgsConstructor @AllArgsConstructor
 public class Shift {
 
@@ -27,10 +24,50 @@ public class Shift {
     private LocalDateTime startTime;
 
     private LocalDateTime endTime;
+    public ShiftType getShiftType() {
+        return shiftType;
+    }
 
-    @PrePersist
-    public void onStart() {
-        this.startTime = LocalDateTime.now();
+    public void setShiftType(ShiftType shiftType) {
+        this.shiftType = shiftType;
+    }
+    public BigDecimal getOpeningReading() {
+        return openingReading;
+    }
+
+    public void setOpeningReading(BigDecimal openingReading) {
+        this.openingReading = openingReading;
+    }
+
+    public BigDecimal getClosingReading() {
+        return closingReading;
+    }
+    public void setClosingReading(BigDecimal closingReading) {
+        this.closingReading = closingReading;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
     }
 
 }
