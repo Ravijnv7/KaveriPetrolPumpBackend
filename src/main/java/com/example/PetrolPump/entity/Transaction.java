@@ -1,11 +1,9 @@
 package com.example.PetrolPump.entity;
 
-
 import jakarta.persistence.*;
-import lombok.*;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Set;
 
 @Entity
 @Table(name = "transactions")
@@ -15,12 +13,67 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    public Long getId() {
-        return id;
+    // ======================
+    // Relationships
+    // ======================
+
+    // Shift is mandatory
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "shift_id", nullable = false)
+    private Shift shift;
+
+    // Employee who did the sale
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "employee_id", nullable = false)
+    private Employee employee;
+
+    // Customer ONLY for CREDIT (validated in service)
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
+
+    // CASH / UPI / CREDIT
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "payment_mode_id", nullable = false)
+    private PaymentMode paymentMode;
+
+    // MS or HSD
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "product_id", nullable = false)
+    private Product product;
+
+    // ======================
+    // Transaction data
+    // ======================
+
+    @Column(nullable = false, precision = 10, scale = 3)
+    private BigDecimal liters;
+
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal ratePerLiter;
+
+    @Column(nullable = false, updatable = false, precision = 12, scale = 2)
+    private BigDecimal amount;
+
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime transactionDate;
+
+    // ======================
+    // Lifecycle
+    // ======================
+
+    @PrePersist
+    protected void onCreate() {
+        this.transactionDate = LocalDateTime.now();
+        this.amount = liters.multiply(ratePerLiter);
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    // ======================
+    // Getters & Setters
+    // ======================
+
+    public Long getId() {
+        return id;
     }
 
     public Shift getShift() {
@@ -83,60 +136,7 @@ public class Transaction {
         return amount;
     }
 
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
-    }
-
     public LocalDateTime getTransactionDate() {
         return transactionDate;
-    }
-
-    public void setTransactionDate(LocalDateTime transactionDate) {
-        this.transactionDate = transactionDate;
-    }
-
-    // Shift is mandatory
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "shift_id")
-    private Shift shift;
-
-    // Employee who did the sale
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "employee_id")
-    private Employee employee;
-
-    // Customer only for CREDIT
-    @ManyToOne
-    @JoinColumn(name = "customer_id")
-    private Customer customer;
-
-    // CASH / UPI / CREDIT
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "payment_mode_id")
-    private PaymentMode paymentMode;
-
-    // MS or HSD (single product)
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "product_id")
-    private Product product;
-
-    // Meter-based quantity
-    @Column(nullable = false)
-    private BigDecimal liters;
-
-    // Rate at that moment (IMPORTANT)
-    @Column(nullable = false)
-    private BigDecimal ratePerLiter;
-
-    // liters × rate
-    @Column(nullable = false)
-    private BigDecimal amount;
-
-    private LocalDateTime transactionDate;
-
-    @PrePersist
-    void onCreate() {
-        this.transactionDate = LocalDateTime.now();
-        this.amount = liters.multiply(ratePerLiter);
     }
 }
