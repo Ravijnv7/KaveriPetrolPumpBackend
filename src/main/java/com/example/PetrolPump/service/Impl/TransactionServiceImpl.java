@@ -31,6 +31,7 @@ public class TransactionServiceImpl implements TransactionService {
         this.paymentModeRepository = paymentModeRepository;
         this.customerRepository = customerRepository;
     }
+
     @Override
     public Transaction createTransaction(TransactionRequest request) {
 
@@ -50,22 +51,28 @@ public class TransactionServiceImpl implements TransactionService {
         PaymentMode paymentMode = paymentModeRepository.findById(request.getPaymentModeId())
                 .orElseThrow(() -> new RuntimeException("Payment mode not found"));
 
-        Customer customer = null;
-        if ("CREDIT".equalsIgnoreCase(paymentMode.getModeName())) {
-            customer = customerRepository.findById(request.getCustomerId())
-                    .orElseThrow(() -> new RuntimeException("Customer required for credit"));
+        if (request.getLiters().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new RuntimeException("Liters must be greater than zero");
         }
+
+        Customer customer = null;
+        if (paymentMode.getModeName().equalsIgnoreCase("CREDIT")) {
+            if (request.getCustomerId() == null) {
+                throw new RuntimeException("Customer is required for CREDIT");
+            }
+            customer = customerRepository.findById(request.getCustomerId())
+                    .orElseThrow(() -> new RuntimeException("Customer not found"));
+        }
+
         Transaction transaction = new Transaction();
         transaction.setShift(shift);
         transaction.setEmployee(employee);
         transaction.setProduct(product);
         transaction.setPaymentMode(paymentMode);
         transaction.setCustomer(customer);
-
         transaction.setLiters(request.getLiters());
         transaction.setRatePerLiter(product.getProductPrice());
 
-        // amount auto-calculated in @PrePersist
         return transactionRepository.save(transaction);
     }
 }
